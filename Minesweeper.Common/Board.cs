@@ -10,6 +10,9 @@ namespace Minesweeper.Common
 
         public Board(int rows, int columns)
         {
+            if(rows < 1) { throw new Exception("Rows must be positive."); }
+            if(columns < 1) { throw new Exception("Columns must be positive."); }
+
             this.Rows = rows;
             this.Columns = columns;
 

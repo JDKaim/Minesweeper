@@ -29,7 +29,7 @@ namespace Minesweeper.Tests
             Assert.IsFalse(game.IsLost);
 
             game.Mark(0, 0);
-            Assert.IsTrue(game.Board.GetAt(0, 0).IsMine);
+            Assert.AreEqual(game.Board.GetAt(0, 0).State, CellState.Revealed);
 
             Assert.IsTrue(game.IsGameOver);
             Assert.IsTrue(game.IsWon);
@@ -57,14 +57,14 @@ namespace Minesweeper.Tests
         [TestMethod]
         public void Lose2x1x1Game()
         {
-            Game game = new Game(1, 1, 0);
+            Game game = new Game(2, 1, 1);
             if (game.Board.GetAt(0, 0).IsMine)
             {
                 game.Mark(0, 0);
             }
             else
             {
-                game.Mark(0, 1);
+                game.Mark(1, 0);
             }
 
             Assert.IsTrue(game.IsGameOver);
@@ -84,6 +84,23 @@ namespace Minesweeper.Tests
         public void TooManyMines()
         {
             Game game = new Game(5, 10, 51);
+        }
+
+        [TestMethod]
+        public void MarkSpread()
+        {
+            Game game = new Game(10, 10, 0);
+            game.Board.GetAt(0, 0).IsMine = true;
+            game.Board.GetAt(9, 0).IsMine = true;
+            game.Board.GetAt(0, 9).IsMine = true;
+            game.Board.GetAt(9, 9).IsMine = true;
+            game.UpdateNumbers();
+
+            game.Mark(2, 2);
+
+            Assert.IsTrue(game.IsGameOver);
+            Assert.IsTrue(game.IsWon);
+            Assert.IsFalse(game.IsLost);
         }
     }
 }
