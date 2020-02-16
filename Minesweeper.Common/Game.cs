@@ -8,6 +8,31 @@ namespace Minesweeper.Common
     {
         public readonly Board Board;
         public readonly int Mines;
+
+        public bool IsGameOver
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool IsWon
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool IsLost
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         public Game(int rows, int columns, int mines)
         {
             this.Board = new Board(rows, columns);
@@ -72,6 +97,21 @@ namespace Minesweeper.Common
                     cell.SurroundingMines = mineCount;
                 }
             }
+        }
+
+        public void Mark(int row, int column)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetFlag(int row, int column)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ClearFlag(int row, int column)
+        {
+            throw new NotImplementedException();
         }
     }
 }
