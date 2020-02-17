@@ -9,6 +9,23 @@ namespace Minesweeper.Common
         public readonly Board Board;
         public readonly int Mines;
 
+        public int FlagsLeft
+        {
+            get
+            {
+                int flagsLeft = this.Mines;
+                for (int row = 0; row < this.Board.Rows; row++)
+                {
+                    for (int column = 0; column < this.Board.Columns; column++)
+                    {
+                        Cell cell = Board.GetAt(row, column);
+                        if (cell.State == CellState.Flagged) { flagsLeft -= 1; }
+                    }
+                }
+                return flagsLeft;
+            }
+        }
+
         public bool IsGameOver
         {
             get
@@ -59,6 +76,7 @@ namespace Minesweeper.Common
         public Game(int rows, int columns, int mines)
         {
             this.Board = new Board(rows, columns);
+            this.Mines = mines;
 
             if (mines < 0) { throw new Exception("Mine amount must zero or greater."); }
             if (mines > (rows * columns)) { throw new Exception("Mine amount must be less than game board room."); }
