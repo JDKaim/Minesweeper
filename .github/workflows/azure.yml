@@ -35,7 +35,7 @@ jobs:
       run: nuget restore Minesweeper.sln
  
     - name: Build and Publish Web App
-      run: msbuild Minesweeper.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
+      run: msbuild Minesweeper.sln /p:Configuration=Release
 
     - name: 'Deploy to Azure WebApp'
       uses: azure/webapps-deploy@v1
