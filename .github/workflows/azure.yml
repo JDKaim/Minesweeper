@@ -15,7 +15,6 @@ on:
 
 env:
   AZURE_WEBAPP_NAME: jdkaim-minesweeper    # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: './Minesweeper.Web/bin/Release/Publish'      # set this to the path to your web app project, defaults to the repository root
 
 jobs:
   build-and-deploy:
@@ -34,10 +33,8 @@ jobs:
     - name: Restore NuGet Packages
       run: nuget restore Minesweeper.sln
  
-    - name: Build and Publish Web App
+    - name: Build Web App
       run: msbuild Minesweeper.sln /p:Configuration=Release
-      
-      
       
     - name: Log in to Azure
       uses: azure/login@v1
@@ -48,9 +45,7 @@ jobs:
       uses: azure/webapps-deploy@v1
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
-#        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
-    - name: logout
-      run: azlogout
-        
-        
+    - name: Log out of Azure
+      run: |
+        az logout
