@@ -15,7 +15,7 @@ on:
 
 env:
   AZURE_WEBAPP_NAME: jdkaim-minesweeper    # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: ./Minesweeper.Web/bin/Release/Publish
+  AZURE_WEBAPP_PACKAGE_PATH: .\Minesweeper.Web\obj\Release\Package\Minesweeper.Web.zip
 
 jobs:
   build-and-deploy:
