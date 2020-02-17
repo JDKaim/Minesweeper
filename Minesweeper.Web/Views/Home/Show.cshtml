@@ -1,9 +1,10 @@
 ﻿@using Minesweeper.Common;
 
-@{
-    ViewBag.Title = "Minesweeper";
-}
 @model Game
+
+@{
+    ViewBag.Title = $"Minesweeper: {(Model.Board.Rows > 10 ? "Hard" : (Model.Board.Rows < 10) ? "Easy" : "Medium")}";
+}
 
 <h2>@ViewBag.Title.</h2>
 <h3>
