@@ -22,3 +22,11 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.cell {
+    height: 40px;
+    width: 40px;
+    padding-top: 10px;
+    display: inline-block;
+    border: 1px solid forestgreen;
+}

@@ -33,14 +33,24 @@ namespace Minesweeper.Web.Controllers
             Game game = this.Session["Game"] as Game;
             if (game == null)
             {
-                return this.RedirectToAction("New");
+                return this.RedirectToAction("NewMedium");
             }
             return View(game);
         }
 
-        public ActionResult New()
+        public ActionResult NewEasy()
+        {
+            this.Session["Game"] = new Game(8, 8, 6);
+            return this.RedirectToAction("Show");
+        }
+        public ActionResult NewMedium()
         {
             this.Session["Game"] = new Game(10,10,10);
+            return this.RedirectToAction("Show");
+        }
+        public ActionResult NewHard()
+        {
+            this.Session["Game"] = new Game(15, 15, 30);
             return this.RedirectToAction("Show");
         }
 
