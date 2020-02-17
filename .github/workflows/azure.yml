@@ -22,17 +22,21 @@ jobs:
     name: Build and Deploy
     runs-on: windows-latest
     steps:
-    - name: checkout
-      uses: actions/checkout@v1
-    
-    - name: Nuget restore
-      run: dotnet restore ./Minesweeper.sln
-      
-    - name: Build DotNET35
-      run: |
-           cd "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\"
-           .\MSBuild.exe $Env:GITHUB_WORKSPACE\Minesweeper.sln
-           
+    - uses: actions/checkout@v1
+      name: Checkout Code
+     
+    - name: Setup MSBuild Path
+      uses: warrenbuckley/Setup-MSBuild@v1
+       
+    - name: Setup NuGet
+      uses: NuGet/setup-nuget@v1.0.2
+     
+    - name: Restore NuGet Packages
+      run: nuget restore Minesweeper.sln
+ 
+    - name: Build and Publish Web App
+      run: msbuild Minesweeper.sln /p:Configuration=Release /p:DeployOnBuild=true /p:PublishProfile=FolderProfile
+
     - name: 'Deploy to Azure WebApp'
       uses: azure/webapps-deploy@v1
       with:
