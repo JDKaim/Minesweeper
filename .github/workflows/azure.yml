@@ -24,6 +24,8 @@ jobs:
     steps:
     - name: checkout
       uses: actions/checkout@v1
+    - name: Nuget restore
+      run: dotnet restore
     - name: Build DotNET35
       run: dotnet build --configuration Release
     - name: 'Deploy to Azure WebApp'
