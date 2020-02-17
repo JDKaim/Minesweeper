@@ -24,8 +24,10 @@ jobs:
     steps:
     - name: checkout
       uses: actions/checkout@v1
+    
     - name: Nuget restore
-      run: dotnet restore
+      run: dotnet restore ./Minesweeper.sln
+      
     - name: Build DotNET35
       run: dotnet build --configuration Release
     - name: 'Deploy to Azure WebApp'
