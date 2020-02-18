@@ -36,7 +36,7 @@ namespace Minesweeper.Web.Controllers
                 return this.RedirectToAction("NewMedium");
             }
             DateTime created = (DateTime)this.Session["GameStarted"];
-            return View(new GameViewModel(game, (DateTime.UtcNow - created).TotalMilliseconds));
+            return View(new GameViewModel(game, (double)this.Session["Elapsed"]));
         }
 
         public ActionResult NewEasy()
@@ -58,27 +58,43 @@ namespace Minesweeper.Web.Controllers
         {
             this.Session["Game"] = new Game(rows, columns, mines);
             this.Session["GameStarted"] = DateTime.UtcNow;
+            this.Session["Elapsed"] = 0.0;
             return this.RedirectToAction("Show");
         }
 
         public ActionResult Mark(int row, int column)
         {
             Game game = this.Session["Game"] as Game;
-            game.Mark(row, column);
+            if (!game.IsGameOver)
+            {
+                game.Mark(row, column);
+                this.Session["Elapsed"] = (DateTime.UtcNow - (DateTime)this.Session["GameStarted"]).TotalMilliseconds;
+            }
+            
             return this.RedirectToAction("Show");
         }
 
         public ActionResult Flag(int row, int column)
         {
             Game game = this.Session["Game"] as Game;
-            game.SetFlag(row, column);
+            if (!game.IsGameOver)
+            {
+                game.SetFlag(row, column);
+                this.Session["Elapsed"] = (DateTime.UtcNow - (DateTime)this.Session["GameStarted"]).TotalMilliseconds;
+            }
+
             return this.RedirectToAction("Show");
         }
 
         public ActionResult Clear(int row, int column)
         {
             Game game = this.Session["Game"] as Game;
-            game.ClearFlag(row, column);
+            if (!game.IsGameOver)
+            {
+                game.ClearFlag(row, column);
+                this.Session["Elapsed"] = (DateTime.UtcNow - (DateTime)this.Session["GameStarted"]).TotalMilliseconds;
+            }
+
             return this.RedirectToAction("Show");
         }
     }

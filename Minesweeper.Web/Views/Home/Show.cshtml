@@ -76,7 +76,7 @@
     <script type="text/javascript">
         var elapsed = @Model.Elapsed;
         function setElapsed(elapsedTime) {
-            $("#elapsed").text(elapsedTime / 1000);
+            $("#elapsed").text((Math.floor(elapsedTime)) / 1000);
         }
         setElapsed(elapsed);
     </script>
