@@ -35,22 +35,29 @@ namespace Minesweeper.Web.Controllers
             {
                 return this.RedirectToAction("NewMedium");
             }
-            return View(game);
+            DateTime created = (DateTime)this.Session["GameStarted"];
+            return View(new GameViewModel(game, (DateTime.UtcNow - created).TotalMilliseconds));
         }
 
         public ActionResult NewEasy()
         {
-            this.Session["Game"] = new Game(8, 8, 6);
-            return this.RedirectToAction("Show");
+            return StartGame(8, 8, 6);
         }
+
         public ActionResult NewMedium()
         {
-            this.Session["Game"] = new Game(10,10,10);
-            return this.RedirectToAction("Show");
+            return StartGame(10, 10, 10);
         }
+
         public ActionResult NewHard()
         {
-            this.Session["Game"] = new Game(15, 15, 30);
+            return StartGame(15,15,30);
+        }
+
+        private ActionResult StartGame(int rows, int columns, int mines)
+        {
+            this.Session["Game"] = new Game(rows, columns, mines);
+            this.Session["GameStarted"] = DateTime.UtcNow;
             return this.RedirectToAction("Show");
         }
 

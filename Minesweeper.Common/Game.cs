@@ -26,6 +26,22 @@ namespace Minesweeper.Common
             }
         }
 
+        public int Score
+        {
+            get
+            {
+                int score = 0;
+                for (int row = 0; row < this.Board.Rows; row++)
+                {
+                    for (int column = 0; column < this.Board.Columns; column++)
+                    {
+                        Cell cell = Board.GetAt(row, column);
+                        if (cell.State == CellState.Revealed && !cell.IsMine) { score += 1; }
+                    }
+                }
+                return score;
+            }
+        }
         public bool IsGameOver
         {
             get

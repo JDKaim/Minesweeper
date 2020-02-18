@@ -1,35 +1,40 @@
 ﻿@using Minesweeper.Common;
 
-@model Game
+@model GameViewModel
 
 @{
-    ViewBag.Title = $"Minesweeper: {(Model.Board.Rows > 10 ? "Hard" : (Model.Board.Rows < 10) ? "Easy" : "Medium")}";
+    ViewBag.Title = $"Minesweeper: {(Model.Game.Board.Rows > 10 ? "Hard" : (Model.Game.Board.Rows < 10) ? "Easy" : "Medium")}";
 }
 
 <h2>@ViewBag.Title.</h2>
 <h3>
-    @if (Model.IsWon)
+    @if (Model.Game.IsWon)
     {
         <span>You won!</span>
+        <span>Score: @Model.Game.Score</span>
     }
-    else if (Model.IsLost)
+    else if (Model.Game.IsLost)
     {
         <span class="text-danger">You lost!</span>
+        <span>Score: @Model.Game.Score</span>
     }
     else
     {
-        <span>@Model.FlagsLeft flags left.</span>
+        <span>@Model.Game.FlagsLeft flags left.</span>
+        <span>Score: @Model.Game.Score</span>
     }
 </h3>
 
-@for (int row = 0; row < Model.Board.Rows; row++)
+<h4 id="elapsed">&nbsp;</h4>
+
+@for (int row = 0; row < Model.Game.Board.Rows; row++)
 {
     <div>
-        @for (int column = 0; column < Model.Board.Columns; column++)
+        @for (int column = 0; column < Model.Game.Board.Columns; column++)
         {
             <div class="text-center cell">
                 @{
-                    Cell cell = Model.Board.GetAt(row, column);
+                    Cell cell = Model.Game.Board.GetAt(row, column);
 
                     switch (cell.State)
                     {
@@ -65,4 +70,25 @@
             </div>
         }
     </div>
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        var elapsed = @Model.Elapsed;
+        function setElapsed(elapsedTime) {
+            $("#elapsed").text(elapsedTime / 1000);
+        }
+        setElapsed(elapsed);
+    </script>
+
+    @if (!Model.Game.IsGameOver)
+    {
+        <script type="text/javascript">
+            var interval = 20;
+            setInterval(function () {
+                elapsed += interval;
+                setElapsed(elapsed);
+            }, interval);
+        </script>
+    }
 }
