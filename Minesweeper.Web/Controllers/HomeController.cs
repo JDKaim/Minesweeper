@@ -54,7 +54,13 @@ namespace Minesweeper.Web.Controllers
             return StartGame(15,15,30);
         }
 
-        private ActionResult StartGame(int rows, int columns, int mines)
+        public ActionResult Custom()
+        {
+            return this.View();
+        }
+
+
+        public ActionResult StartGame(int rows, int columns, int mines)
         {
             this.Session["Game"] = new Game(rows, columns, mines);
             this.Session["GameStarted"] = DateTime.UtcNow;

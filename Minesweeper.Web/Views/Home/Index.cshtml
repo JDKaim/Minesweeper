@@ -2,13 +2,14 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>Minesweeper</h1>
-    <p class="lead">Welcome to Minesweeper. To start a new game, press any of the links below.</p>
-    @Html.ActionLink("New Easy Game |","NewEasy")
-    @Html.ActionLink("New Medium Game |","NewMedium")
-    @Html.ActionLink("New Hard Game","NewHard")
-</div>
+    <div class="jumbotron">
+        <h1>Minesweeper</h1>
+        <p class="lead">Welcome to Minesweeper. To start a new game, press any of the links below.</p>
+        @Html.ActionLink("New Easy Game", "NewEasy") |
+        @Html.ActionLink("New Medium Game", "NewMedium") |
+        @Html.ActionLink("New Hard Game", "NewHard") |
+        @Html.ActionLink("New Custom Game", "Custom")
+    </div>
 
 <div class="row">
     <div class="col-md-4">
