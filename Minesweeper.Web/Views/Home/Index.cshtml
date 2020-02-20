@@ -25,8 +25,9 @@
         <p><a class="btn btn-default" href="https://www.jdkaim.com/">Learn more &raquo;</a></p>
     </div>
     <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>I don't host web sites.</p>
-        <p><a class="btn btn-default" href="https://www.jdkaim.com/">Learn more &raquo;</a></p>
+        <h2>Leaderboards</h2>
+        <p>@Html.ActionLink("Easy Leaderboard", "Leaderboard", new { rows = 8, columns = 8, mines = 6 })</p>
+        <p>@Html.ActionLink("Medium Leaderboard", "Leaderboard", new { rows = 10, columns = 10, mines = 10 })</p>
+        <p>@Html.ActionLink("Hard Leaderboard", "Leaderboard", new { rows = 15, columns = 15, mines = 30 })</p>
     </div>
 </div>

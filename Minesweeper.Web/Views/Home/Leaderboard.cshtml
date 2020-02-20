@@ -1,0 +1,29 @@
+﻿@using Minesweeper.Web.Models
+@{
+    ViewBag.Title = "Leaderboard";
+}
+
+@model LeaderboardViewModel
+
+<h2>@ViewBag.Title.</h2>
+<h3>@($"{Model.Rows} rows, {Model.Columns} columns, {Model.Mines} mines")</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>User</th>
+            <th>Elapsed</th>
+            <th>Played</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var game in Model.CompletedGames)
+        {
+            <tr>
+                <td>@game.User.UserName</td>
+                <td>@((game.Elapsed / 1000).ToString("0.00"))</td>
+                <td>@game.Created.ToShortDateString()</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -4,13 +4,46 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity.Owin;
+using Minesweeper.Web.Models;
+using Microsoft.AspNet.Identity;
 
 namespace Minesweeper.Web.Controllers
 {
     [Authorize]
     public class GameController : Controller
     {
-        
+        private ApplicationUserManager _userManager;
+
+        public ApplicationUser LoggedInUser
+        {
+            get
+            {
+                return UserManager.FindById(User.Identity.GetUserId());
+            }
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
+        public GameController()
+        {
+        }
+
+        public GameController(ApplicationUserManager userManager)
+        {
+            UserManager = userManager;
+        }
+
         public ActionResult Show()
         {
             Game game = this.Session["Game"] as Game;
@@ -34,7 +67,7 @@ namespace Minesweeper.Web.Controllers
 
         public ActionResult NewHard()
         {
-            return StartGame(15,15,30);
+            return StartGame(15, 15, 30);
         }
 
         public ActionResult Custom()
@@ -54,12 +87,28 @@ namespace Minesweeper.Web.Controllers
         public ActionResult Mark(int row, int column)
         {
             Game game = this.Session["Game"] as Game;
-            if (!game.IsGameOver)
+            if (game.IsGameOver)
             {
-                game.Mark(row, column);
-                this.Session["Elapsed"] = (DateTime.UtcNow - (DateTime)this.Session["GameStarted"]).TotalMilliseconds;
+                return this.RedirectToAction("Show");
             }
-            
+
+            game.Mark(row, column);
+            this.Session["Elapsed"] = (DateTime.UtcNow - (DateTime)this.Session["GameStarted"]).TotalMilliseconds;
+
+            if (game.IsWon)
+            {
+                this.LoggedInUser.CompletedGames.Add(
+                    new CompletedGame()
+                    {
+                        Columns = game.Board.Columns,
+                        Rows = game.Board.Rows,
+                        Mines = game.Mines,
+                        Created = (DateTime)this.Session["GameStarted"],
+                        Elapsed = (double)this.Session["Elapsed"]
+                    });
+                this.UserManager.Update(this.LoggedInUser);
+            }
+
             return this.RedirectToAction("Show");
         }
 
