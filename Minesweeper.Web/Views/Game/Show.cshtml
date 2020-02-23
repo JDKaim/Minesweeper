@@ -58,7 +58,10 @@
                             }
                             else if (cell.SurroundingMines > 0)
                             {
+                                
+                                <a href="@Url.Action("RevealSurroundings", new { row = row, column = column })">
                                 @cell.SurroundingMines
+                                </a>
                             }
                             else
                             {

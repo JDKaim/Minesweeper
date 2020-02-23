@@ -188,6 +188,38 @@ namespace Minesweeper.Common
             }
         }
 
+        public void RevealSurroundings(int row, int column)
+        {
+            Cell cell = Board.GetAt(row, column);
+
+            if (cell.State != CellState.Revealed) { return; }
+
+            if (cell.IsMine) { return; }
+
+            int surroundingFlags = 0;
+
+            if (Board.IsOnBoard(row - 1, column - 1) && Board.GetAt(row - 1, column - 1).State == CellState.Flagged) { surroundingFlags += 1; }
+            if (Board.IsOnBoard(row - 1, column) && Board.GetAt(row - 1, column).State == CellState.Flagged) { surroundingFlags += 1; }
+            if (Board.IsOnBoard(row - 1, column + 1) && Board.GetAt(row - 1, column + 1).State == CellState.Flagged) { surroundingFlags += 1; }
+            if (Board.IsOnBoard(row, column - 1) && Board.GetAt(row, column - 1).State == CellState.Flagged) { surroundingFlags += 1; }
+            if (Board.IsOnBoard(row, column + 1) && Board.GetAt(row, column + 1).State == CellState.Flagged) { surroundingFlags += 1; }
+            if (Board.IsOnBoard(row + 1, column - 1) && Board.GetAt(row + 1, column - 1).State == CellState.Flagged) { surroundingFlags += 1; }
+            if (Board.IsOnBoard(row + 1, column) && Board.GetAt(row + 1, column).State == CellState.Flagged) { surroundingFlags += 1; }
+            if (Board.IsOnBoard(row + 1, column + 1) && Board.GetAt(row + 1, column + 1).State == CellState.Flagged) { surroundingFlags += 1; }
+            
+            if (surroundingFlags == cell.SurroundingMines)
+            {
+                Mark((row + 1), column);
+                Mark((row - 1), column);
+                Mark((row + 1), (column + 1));
+                Mark((row + 1), (column - 1));
+                Mark((row - 1), (column + 1));
+                Mark((row - 1), (column - 1));
+                Mark(row, (column + 1));
+                Mark(row, (column - 1));
+            }
+        }
+
         public void SetFlag(int row, int column)
         {
             Cell cell = Board.GetAt(row, column);

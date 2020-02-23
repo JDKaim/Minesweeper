@@ -112,6 +112,34 @@ namespace Minesweeper.Web.Controllers
             return this.RedirectToAction("Show");
         }
 
+        public ActionResult RevealSurroundings(int row, int column)
+        {
+            Game game = this.Session["Game"] as Game;
+            if (game.IsGameOver)
+            {
+                return this.RedirectToAction("Show");
+            }
+
+            game.RevealSurroundings(row, column);
+            this.Session["Elapsed"] = (DateTime.UtcNow - (DateTime)this.Session["GameStarted"]).TotalMilliseconds;
+
+            if (game.IsWon)
+            {
+                this.LoggedInUser.CompletedGames.Add(
+                    new CompletedGame()
+                    {
+                        Columns = game.Board.Columns,
+                        Rows = game.Board.Rows,
+                        Mines = game.Mines,
+                        Created = (DateTime)this.Session["GameStarted"],
+                        Elapsed = (double)this.Session["Elapsed"]
+                    });
+                this.UserManager.Update(this.LoggedInUser);
+            }
+
+            return this.RedirectToAction("Show");
+        }
+
         public ActionResult Flag(int row, int column)
         {
             Game game = this.Session["Game"] as Game;
