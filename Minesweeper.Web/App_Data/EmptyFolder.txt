@@ -1,0 +1,1 @@
+This file is here so that the App_Data folder will be created when cloned. This is necessary to avoid issues creating the initial local database.
