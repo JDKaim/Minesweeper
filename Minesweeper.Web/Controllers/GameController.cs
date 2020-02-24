@@ -69,6 +69,10 @@ namespace Minesweeper.Web.Controllers
         {
             return StartGame(15, 15, 30);
         }
+        public ActionResult NewExpert()
+        {
+            return StartGame(20, 20, 70);
+        }
 
         public ActionResult Custom()
         {
