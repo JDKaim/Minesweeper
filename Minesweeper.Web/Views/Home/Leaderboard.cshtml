@@ -22,7 +22,28 @@
             <tr>
                 <td>@game.User.UserName</td>
                 <td>@((game.Elapsed / 1000).ToString("0.00"))</td>
-                <td>@game.Created.ToShortDateString()</td>
+                <td>
+                    @{
+                        TimeSpan timeSpan = DateTime.UtcNow - game.Created;
+                        if (timeSpan.TotalDays > 7)
+                        {
+                            <span>@game.Created.ToShortDateString()</span>
+                        }
+                        else if (timeSpan.TotalDays > 1)
+                        {
+                            <span>@(Math.Round(timeSpan.TotalDays)) days ago</span>
+                        }
+                        else if (timeSpan.TotalHours > 1)
+                        {
+                            <span>@(Math.Round(timeSpan.TotalHours)) hours ago</span>
+                        }
+                        else if (timeSpan.TotalMinutes > 1)
+                        {
+                            <span>@(Math.Round(timeSpan.TotalMinutes)) minutes ago</span>
+                        }
+                        else { <span>Just now</span>}
+                    }
+                </td>
             </tr>
         }
     </tbody>

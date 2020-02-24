@@ -30,11 +30,20 @@ namespace Minesweeper.Web.Controllers
             return View();
         }
 
-        public ActionResult Leaderboard(int rows, int columns, int mines)
+        public ActionResult Leaderboard(int rows, int columns, int mines, DateTime? since, int? hours)
         {
             using (ApplicationDbContext db = ApplicationDbContext.Create())
             {
                 var query = db.CompletedGames.Include(item => item.User).Where((item) => (item.Rows == rows) && (item.Columns == columns) && (item.Mines == mines));
+                if (hours.HasValue)
+                {
+                    since = DateTime.UtcNow.AddHours(-hours.Value);
+                }
+
+                if (since.HasValue)
+                {
+                    query = query.Where(item => item.Created >= since.Value);
+                }
                 query = query.OrderBy(item => item.Elapsed);
                 query = query.Take(10);
 
