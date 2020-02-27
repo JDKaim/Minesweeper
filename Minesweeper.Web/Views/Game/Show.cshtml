@@ -33,45 +33,56 @@
     <div>
         @for (int column = 0; column < Model.Game.Board.Columns; column++)
         {
-            <div class="text-center cell">
-                @{
-                    Cell cell = Model.Game.Board.GetAt(row, column);
+        <div class="text-center cell">
+            @{
+                Cell cell = Model.Game.Board.GetAt(row, column);
 
-                    switch (cell.State)
-                    {
-                        case CellState.Pristine:
+                switch (cell.State)
+                {
+                    case CellState.Pristine:
+                        if (!Model.Game.IsGameOver)
+                        {
                             <a href="@Url.Action("Mark", new { row = row, column = column })">
                                 <i class="glyphicon glyphicon-screenshot"></i>
                             </a>
                             <a href="@Url.Action("Flag", new { row = row, column = column })">
                                 <i class="glyphicon glyphicon-flag small"></i>
                             </a>
-                            break;
-                        case CellState.Flagged:
-                            <a href="@Url.Action("Clear", new { row = row, column = column })">
-                                <i class="glyphicon glyphicon-flag text-danger"></i>
-                            </a>
-                            break;
-                        case CellState.Revealed:
-                            if (cell.IsMine)
-                            {
-                                <i class="glyphicon glyphicon-certificate text-danger"></i>
-                            }
-                            else if (cell.SurroundingMines > 0)
-                            {
+                        }
+                        else if (cell.IsMine)
+                        {
+                            <i class="glyphicon glyphicon-certificate text-success"></i>
+                        }
+                        else
+                        {
+                            <span>&nbsp;</span>
+                        }
+                        break;
+                    case CellState.Flagged:
+                        <a href="@Url.Action("Clear", new { row = row, column = column })">
+                            <i class="glyphicon glyphicon-flag text-danger"></i>
+                        </a>
+                        break;
+                    case CellState.Revealed:
+                        if (cell.IsMine)
+                        {
+                            <i class="glyphicon glyphicon-certificate text-danger"></i>
+                        }
+                        else if (cell.SurroundingMines > 0)
+                        {
 
-                                <a href="@Url.Action("RevealSurroundings", new { row = row, column = column })">
-                                    @cell.SurroundingMines
-                                </a>
-                            }
-                            else
-                            {
-                                <span>&nbsp;</span>
-                            }
-                            break;
-                    }
+                            <a href="@Url.Action("RevealSurroundings", new { row = row, column = column })">
+                                @cell.SurroundingMines
+                            </a>
+                        }
+                        else
+                        {
+                            <span>&nbsp;</span>
+                        }
+                        break;
                 }
-            </div>
+            }
+        </div>
         }
     </div>
 }
