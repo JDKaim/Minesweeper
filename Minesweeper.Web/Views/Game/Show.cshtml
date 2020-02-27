@@ -8,6 +8,7 @@
 
 <h2>@ViewBag.Title.</h2>
 <p>@Html.ActionLink("Leaderboard", "Leaderboard", "Home", new { rows = Model.Game.Board.Rows, columns = Model.Game.Board.Columns, mines = Model.Game.Mines }, null)</p>
+<p>@Html.ActionLink("Restart", "StartGame", "Game", new { rows = Model.Game.Board.Rows, columns = Model.Game.Board.Columns, mines = Model.Game.Mines}, null)</p>
 <h3>
     @if (Model.Game.IsWon)
     {
