@@ -7,6 +7,13 @@
 
 <h2>@ViewBag.Title.</h2>
 <h3>@($"{Model.Rows} rows, {Model.Columns} columns, {Model.Mines} mines")</h3>
+<div>
+    @Html.ActionLink("All Time", "Leaderboard", new { rows = Model.Rows, columns = Model.Columns, mines = Model.Mines }) |
+    @Html.ActionLink("1 Week", "Leaderboard", new { rows = Model.Rows, columns = Model.Columns, mines = Model.Mines, hours = 168 }) |
+    @Html.ActionLink("1 Day", "Leaderboard", new { rows = Model.Rows, columns = Model.Columns, mines = Model.Mines, hours = 24 }) |
+    @Html.ActionLink("1 Hour", "Leaderboard", new { rows = Model.Rows, columns = Model.Columns, mines = Model.Mines, hours = 1 })
+</div>
+
 
 <table class="table">
     <thead>
@@ -41,7 +48,8 @@
                         {
                             <span>@(Math.Round(timeSpan.TotalMinutes)) minutes ago</span>
                         }
-                        else { <span>Just now</span>}
+                        else
+                        { <span>Just now</span>}
                     }
                 </td>
             </tr>

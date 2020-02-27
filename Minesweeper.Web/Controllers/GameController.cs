@@ -15,6 +15,7 @@ namespace Minesweeper.Web.Controllers
     {
         private ApplicationUserManager _userManager;
 
+
         public ApplicationUser LoggedInUser
         {
             get
