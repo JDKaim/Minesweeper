@@ -30,61 +30,84 @@
 
 @for (int row = 0; row < Model.Game.Board.Rows; row++)
 {
-    <div>
-        @for (int column = 0; column < Model.Game.Board.Columns; column++)
+<div>
+    @for (int column = 0; column < Model.Game.Board.Columns; column++)
+    {
+        Cell cell = Model.Game.Board.GetAt(row, column);
+
+        switch (cell.State)
         {
-        <div class="text-center cell">
-            @{
-                Cell cell = Model.Game.Board.GetAt(row, column);
-
-                switch (cell.State)
+            case CellState.Pristine:
+                <div class="text-center cell cell-pristine">
+                    @if (!Model.Game.IsGameOver)
+                    {
+                        <a href="@Url.Action("Mark", new { row = row, column = column })"><i class="glyphicon glyphicon-screenshot"></i></a>
+                        <a href="@Url.Action("Flag", new { row = row, column = column })"><i class="glyphicon glyphicon-flag small"></i></a>
+                    }
+                    else if (cell.IsMine)
+                    {
+                        <i class="glyphicon glyphicon-certificate text-success"></i>
+                    }
+                    else
+                    {
+                        <span>&nbsp;</span>
+                    }
+                </div>
+                break;
+            case CellState.Flagged:
+                if (!Model.Game.IsGameOver)
                 {
-                    case CellState.Pristine:
-                        if (!Model.Game.IsGameOver)
-                        {
-                            <a href="@Url.Action("Mark", new { row = row, column = column })">
-                                <i class="glyphicon glyphicon-screenshot"></i>
-                            </a>
-                            <a href="@Url.Action("Flag", new { row = row, column = column })">
-                                <i class="glyphicon glyphicon-flag small"></i>
-                            </a>
-                        }
-                        else if (cell.IsMine)
-                        {
-                            <i class="glyphicon glyphicon-certificate text-success"></i>
-                        }
-                        else
-                        {
-                            <span>&nbsp;</span>
-                        }
-                        break;
-                    case CellState.Flagged:
-                        <a href="@Url.Action("Clear", new { row = row, column = column })">
-                            <i class="glyphicon glyphicon-flag text-danger"></i>
+                    <div class="text-center cell cell-flagged">
+                        <a href="@Url.Action("Clear", new { row = row, column = column })" class="fill-div">
+                            <i class="glyphicon glyphicon-flag text-warning"></i>
                         </a>
-                        break;
-                    case CellState.Revealed:
-                        if (cell.IsMine)
+                    </div>
+                }
+                else if (cell.IsMine)
+                {
+                    <div class="text-center cell cell-flagged-correctly">
+                        <i class="glyphicon glyphicon-flag text-success"></i>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center cell cell-flagged-incorrectly">
+                        <i class="glyphicon glyphicon-flag text-danger"></i>
+                    </div>
+                }
+                break;
+            case CellState.Revealed:
+                if (cell.IsMine)
+                {
+                    <div class="text-center cell cell-mine">
+                        <i class="glyphicon glyphicon-certificate text-danger"></i>
+                    </div>
+                }
+                else if (cell.SurroundingMines > 0)
+                {
+                    <div class="text-center cell cell-@cell.SurroundingMines">
+                        @if (!Model.Game.IsGameOver)
                         {
-                            <i class="glyphicon glyphicon-certificate text-danger"></i>
-                        }
-                        else if (cell.SurroundingMines > 0)
-                        {
-
-                            <a href="@Url.Action("RevealSurroundings", new { row = row, column = column })">
+                            <a href="@Url.Action("RevealSurroundings", new { row = row, column = column })" class="fill-div">
                                 @cell.SurroundingMines
                             </a>
                         }
                         else
                         {
-                            <span>&nbsp;</span>
+                            @cell.SurroundingMines
                         }
-                        break;
+                    </div>
                 }
-            }
-        </div>
+                else
+                {
+                    <div class="text-center cell cell-0">
+                        <span>&nbsp;</span>
+                    </div>
+                }
+                break;
         }
-    </div>
+    }
+</div>
 }
 
 @section Scripts {
