@@ -218,10 +218,34 @@ namespace Minesweeper.Common
                 Mark(row, (column + 1));
                 Mark(row, (column - 1));
             }
+
+            surroundingFlags = 8;
+
+            if (!Board.IsOnBoard(row - 1, column - 1) || Board.GetAt(row - 1, column - 1).State == CellState.Revealed) { surroundingFlags -= 1; }
+            if (!Board.IsOnBoard(row - 1, column) || Board.GetAt(row - 1, column).State == CellState.Revealed) { surroundingFlags -= 1; }
+            if (!Board.IsOnBoard(row - 1, column + 1) || Board.GetAt(row - 1, column + 1).State == CellState.Revealed) { surroundingFlags -= 1; }
+            if (!Board.IsOnBoard(row, column - 1) || Board.GetAt(row, column - 1).State == CellState.Revealed) { surroundingFlags -= 1; }
+            if (!Board.IsOnBoard(row, column + 1) || Board.GetAt(row, column + 1).State == CellState.Revealed) { surroundingFlags -= 1; }
+            if (!Board.IsOnBoard(row + 1, column - 1) || Board.GetAt(row + 1, column - 1).State == CellState.Revealed) { surroundingFlags -= 1; }
+            if (!Board.IsOnBoard(row + 1, column) || Board.GetAt(row + 1, column).State == CellState.Revealed) { surroundingFlags -= 1; }
+            if (!Board.IsOnBoard(row + 1, column + 1) || Board.GetAt(row + 1, column + 1).State == CellState.Revealed) { surroundingFlags -= 1; }
+
+            if (surroundingFlags == cell.SurroundingMines)
+            {
+                SetFlag((row + 1), column);
+                SetFlag((row - 1), column);
+                SetFlag((row + 1), (column + 1));
+                SetFlag((row + 1), (column - 1));
+                SetFlag((row - 1), (column + 1));
+                SetFlag((row - 1), (column - 1));
+                SetFlag(row, (column + 1));
+                SetFlag(row, (column - 1));
+            }
         }
 
         public void SetFlag(int row, int column)
         {
+            if (!this.Board.IsOnBoard(row, column)) { return; }
             Cell cell = Board.GetAt(row, column);
             if (cell.State == CellState.Pristine) { cell.State = CellState.Flagged; }
         }
