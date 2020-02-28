@@ -42,6 +42,8 @@ namespace Minesweeper.Common
                 return score;
             }
         }
+
+        public int Moves { get; set; }
         public bool IsGameOver
         {
             get
@@ -164,7 +166,7 @@ namespace Minesweeper.Common
             }
         }
 
-        public void Mark(int row, int column)
+        public void Mark(int row, int column, bool click = false)
         {
             if (!this.Board.IsOnBoard(row, column)) { return; }
 
@@ -173,6 +175,7 @@ namespace Minesweeper.Common
             if (cell.State != CellState.Pristine) { return; }
 
             cell.State = CellState.Revealed;
+            if (click == true) { Moves += 1; }
             if (cell.IsMine) { return; }
 
             if (cell.SurroundingMines == 0)
@@ -217,6 +220,7 @@ namespace Minesweeper.Common
                 Mark((row - 1), (column - 1));
                 Mark(row, (column + 1));
                 Mark(row, (column - 1));
+                Moves += 1;
             }
 
             surroundingFlags = 8;
@@ -247,13 +251,13 @@ namespace Minesweeper.Common
         {
             if (!this.Board.IsOnBoard(row, column)) { return; }
             Cell cell = Board.GetAt(row, column);
-            if (cell.State == CellState.Pristine) { cell.State = CellState.Flagged; }
+            if (cell.State == CellState.Pristine) { cell.State = CellState.Flagged; Moves += 1; }
         }
 
         public void ClearFlag(int row, int column)
         {
             Cell cell = Board.GetAt(row, column);
-            if (cell.State == CellState.Flagged) { cell.State = CellState.Pristine; }
+            if (cell.State == CellState.Flagged) { cell.State = CellState.Pristine; Moves += 1; }
         }
 
     }

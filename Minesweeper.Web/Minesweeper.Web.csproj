@@ -182,6 +182,10 @@
     <Compile Include="Migrations\202002200530135_InitialCreate.designer.cs">
       <DependentUpon>202002200530135_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002280239351_AddedMoves.cs" />
+    <Compile Include="Migrations\202002280239351_AddedMoves.designer.cs">
+      <DependentUpon>202002280239351_AddedMoves.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CompletedGame.cs" />
@@ -278,6 +282,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\202002200530135_InitialCreate.resx">
       <DependentUpon>202002200530135_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002280239351_AddedMoves.resx">
+      <DependentUpon>202002280239351_AddedMoves.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

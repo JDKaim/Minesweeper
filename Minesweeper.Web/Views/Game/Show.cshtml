@@ -13,17 +13,20 @@
     @if (Model.Game.IsWon)
     {
         <span>You won!</span>
-        <span>Score: @Model.Game.Score</span>
+        <span>Score: @Model.Game.Score |</span>
+        <span>Moves: @Model.Game.Moves</span>
     }
     else if (Model.Game.IsLost)
     {
         <span class="text-danger">You lost!</span>
-        <span>Score: @Model.Game.Score</span>
+        <span>Score: @Model.Game.Score |</span>
+        <span>Moves: @Model.Game.Moves</span>
     }
     else
     {
         <span>@Model.Game.FlagsLeft flags left.</span>
-        <span>Score: @Model.Game.Score</span>
+        <span>Score: @Model.Game.Score |</span>
+        <span>Moves: @Model.Game.Moves</span>
     }
 </h3>
 

@@ -20,6 +20,7 @@
         <tr>
             <th>User</th>
             <th>Elapsed</th>
+            <th>Moves</th>
             <th>Played</th>
         </tr>
     </thead>
@@ -29,6 +30,7 @@
             <tr>
                 <td>@game.User.UserName</td>
                 <td>@((game.Elapsed / 1000).ToString("0.00"))</td>
+                <td>@game.Moves</td>
                 <td>
                     @{
                         TimeSpan timeSpan = DateTime.UtcNow - game.Created;

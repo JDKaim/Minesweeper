@@ -97,7 +97,7 @@ namespace Minesweeper.Web.Controllers
                 return this.RedirectToAction("Show");
             }
 
-            game.Mark(row, column);
+            game.Mark(row, column, true);
             this.Session["Elapsed"] = (DateTime.UtcNow - (DateTime)this.Session["GameStarted"]).TotalMilliseconds;
 
             if (game.IsWon)
@@ -108,9 +108,10 @@ namespace Minesweeper.Web.Controllers
                         Columns = game.Board.Columns,
                         Rows = game.Board.Rows,
                         Mines = game.Mines,
+                        Moves = game.Moves,
                         Created = (DateTime)this.Session["GameStarted"],
                         Elapsed = (double)this.Session["Elapsed"]
-                    });
+                    }); ;
                 this.UserManager.Update(this.LoggedInUser);
             }
 
@@ -136,6 +137,7 @@ namespace Minesweeper.Web.Controllers
                         Columns = game.Board.Columns,
                         Rows = game.Board.Rows,
                         Mines = game.Mines,
+                        Moves = game.Moves,
                         Created = (DateTime)this.Session["GameStarted"],
                         Elapsed = (double)this.Session["Elapsed"]
                     });
