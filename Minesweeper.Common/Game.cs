@@ -9,6 +9,21 @@ namespace Minesweeper.Common
         public readonly Board Board;
         public readonly int Mines;
 
+
+        public bool isPristine
+        {
+            get {
+                for (int row = 0; row < this.Board.Rows; row++)
+                {
+                    for (int column = 0; column < this.Board.Columns; column++)
+                    {
+                        Cell cell = Board.GetAt(row, column);
+                        if (cell.State != CellState.Pristine) { return false; }
+                    }
+                }
+                return true;
+            }
+        }
         public int FlagsLeft
         {
             get

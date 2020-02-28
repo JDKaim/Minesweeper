@@ -52,8 +52,21 @@ namespace Minesweeper.Web.Controllers
             {
                 return this.RedirectToAction("NewMedium");
             }
+            if (game.isPristine)
+            {
+                return View(new GameViewModel(game, 0.0));
+            }
             DateTime created = (DateTime)this.Session["GameStarted"];
-            return View(new GameViewModel(game, (double)this.Session["Elapsed"]));
+            if (!game.IsGameOver)
+            {
+                return View(new GameViewModel(game, (DateTime.UtcNow - (DateTime)this.Session["GameStarted"]).TotalMilliseconds));
+            }
+            else
+            {
+                return View(new GameViewModel(game, (double)this.Session["Elapsed"]));
+            }
+            
+
         }
 
         public ActionResult NewEasy()
@@ -84,8 +97,6 @@ namespace Minesweeper.Web.Controllers
         public ActionResult StartGame(int rows, int columns, int mines)
         {
             this.Session["Game"] = new Game(rows, columns, mines);
-            this.Session["GameStarted"] = DateTime.UtcNow;
-            this.Session["Elapsed"] = 0.0;
             return this.RedirectToAction("Show");
         }
 
@@ -97,11 +108,17 @@ namespace Minesweeper.Web.Controllers
                 return this.RedirectToAction("Show");
             }
 
+            if (game.isPristine)
+            {
+                this.Session["GameStarted"] = DateTime.UtcNow;
+            }
+
             game.Mark(row, column, true);
-            this.Session["Elapsed"] = (DateTime.UtcNow - (DateTime)this.Session["GameStarted"]).TotalMilliseconds;
+
 
             if (game.IsWon)
             {
+                this.Session["Elapsed"] = (DateTime.UtcNow - (DateTime)this.Session["GameStarted"]).TotalMilliseconds;
                 this.LoggedInUser.CompletedGames.Add(
                     new CompletedGame()
                     {
@@ -111,8 +128,13 @@ namespace Minesweeper.Web.Controllers
                         Moves = game.Moves,
                         Created = (DateTime)this.Session["GameStarted"],
                         Elapsed = (double)this.Session["Elapsed"]
-                    }); ;
+                    });
                 this.UserManager.Update(this.LoggedInUser);
+                
+            }
+            if (game.IsLost)
+            {
+                this.Session["Elapsed"] = (DateTime.UtcNow - (DateTime)this.Session["GameStarted"]).TotalMilliseconds;
             }
 
             return this.RedirectToAction("Show");
