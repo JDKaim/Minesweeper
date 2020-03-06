@@ -26,6 +26,9 @@ jobs:
  
     - name: Build Web App
       run: msbuild Minesweeper.sln /p:Configuration=Release /p:DeployOnBuild=true
+    
+    - name: Run Unit Tests
+      run: vstest.console.exe **\*.Tests.dll
       
     - name: Log in to Azure
       uses: azure/login@v1
