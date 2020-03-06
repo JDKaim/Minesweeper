@@ -191,7 +191,18 @@ namespace Minesweeper.Common
 
             cell.State = CellState.Revealed;
             if (click == true) { Moves += 1; }
-            if (cell.IsMine) { return; }
+            if (cell.IsMine) { 
+                if (moves == 0) {
+                    Random r = new Random();
+                    while (cell.IsMine) {
+                        cell.IsMine = false;
+                        int ind = r.Next(0, cells.Count);
+                        cells[ind].IsMine = true;
+                        cells.RemoveAt(ind);
+                    }
+                }
+                else {
+                return; }}
 
             if (cell.SurroundingMines == 0)
             {
