@@ -41,7 +41,12 @@ namespace Minesweeper.Common
         {
             if (!IsOnBoard(row, column)) { throw new Exception($"Row {row}, Column {column} is not on the board, Einstein.");  } 
         }
-
+        public void SwitchTwoCells(int row_1, int col_1, int row_2, int col_2) {
+            Cell first = GetAt(row_1,col_1);
+            Cell second = GetAt(row_2,col_2);
+            this._cells[row_1][col_1]=second;
+            this._cells[row_2][col_2]=first;
+        }
         public Cell GetAt(int row, int column)
         {
             this.VerifyIsOnBoard(row, column);
