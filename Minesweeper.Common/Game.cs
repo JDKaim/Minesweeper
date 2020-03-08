@@ -12,7 +12,8 @@ namespace Minesweeper.Common
 
         public bool isPristine
         {
-            get {
+            get
+            {
                 for (int row = 0; row < this.Board.Rows; row++)
                 {
                     for (int column = 0; column < this.Board.Columns; column++)
@@ -191,7 +192,31 @@ namespace Minesweeper.Common
 
             cell.State = CellState.Revealed;
             if (click == true) { Moves += 1; }
-            if (cell.IsMine) { return; }
+            if (cell.IsMine)
+            {
+                if (this.Moves > 1) { return; }
+
+                // Make a list of cells that aren't mines.
+                List<Cell> cells = new List<Cell>();
+                for (int rowIndex = 0; rowIndex < this.Board.Rows; rowIndex++)
+                {
+                    for (int columnIndex = 0; columnIndex < this.Board.Columns; columnIndex++)
+                    {
+                        Cell indexCell = this.Board.GetAt(rowIndex, columnIndex);
+                        if (!indexCell.IsMine)
+                        {
+                            cells.Add(indexCell);
+                        }
+                    }
+                }
+
+                // Swap with a random space that isn't a mine.
+                Random random = new Random();
+                int index = random.Next(0, cells.Count);
+                cells[index].IsMine = true;
+                cell.IsMine = false;
+                this.UpdateNumbers();
+            }
 
             if (cell.SurroundingMines == 0)
             {
@@ -224,7 +249,7 @@ namespace Minesweeper.Common
             if (Board.IsOnBoard(row + 1, column - 1) && Board.GetAt(row + 1, column - 1).State == CellState.Flagged) { surroundingFlags += 1; }
             if (Board.IsOnBoard(row + 1, column) && Board.GetAt(row + 1, column).State == CellState.Flagged) { surroundingFlags += 1; }
             if (Board.IsOnBoard(row + 1, column + 1) && Board.GetAt(row + 1, column + 1).State == CellState.Flagged) { surroundingFlags += 1; }
-            
+
             if (surroundingFlags == cell.SurroundingMines)
             {
                 Mark((row + 1), column);
